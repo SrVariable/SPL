@@ -9,9 +9,9 @@ import (
 )
 
 type Env struct {
-	ClientId string
+	ClientId     string
 	ClientSecret string
-	RedirectURI string
+	RedirectURI  string
 }
 
 func NewEnv() (*Env, error) {
@@ -35,8 +35,8 @@ func NewEnv() (*Env, error) {
 	}
 
 	return &Env{
-		ClientId: clientId,
+		ClientId:     clientId,
 		ClientSecret: clientSecret,
-		RedirectURI: redirectURI,
+		RedirectURI:  redirectURI,
 	}, nil
 }
