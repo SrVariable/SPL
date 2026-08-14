@@ -42,6 +42,8 @@ func AddToQueue(at *auth.AccessToken, trackID string) error {
 	}
 	defer resp.Body.Close()
 
+	// It should be http.StatusNoContent according to https://developer.spotify.com/documentation/web-api/reference/add-to-queue,
+	// but the return value was http.StatusOK
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("failed to add track %s to queue: %s", trackID, resp.Status)
 	}
