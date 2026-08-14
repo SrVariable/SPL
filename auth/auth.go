@@ -61,7 +61,9 @@ func getUserAuth(userAuthParams UserAuthParams) (*UserAuth, error) {
 	if err != nil {
 		return nil, err
 	}
-	browser.OpenURL(u.String())
+	if err := browser.OpenURL(u.String()); err != nil {
+		fmt.Println("Couldn open browser, open this link: ", u.String())
+	}
 
 	userAuth := <-userAuthCh
 	if userAuth.Error != "" {
