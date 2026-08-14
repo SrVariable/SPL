@@ -10,7 +10,7 @@ func WaitForAuthCode(expectedState string) (*UserAuth, error) {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		userAuth := &UserAuth{
-			Code: r.URL.Query().Get("code"),
+			Code:  r.URL.Query().Get("code"),
 			State: r.URL.Query().Get("state"),
 			Error: r.URL.Query().Get("error"),
 		}

@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 )
 
-func GenerateCode(n int) (string, error ) {
+func GenerateCode(n int) (string, error) {
 	b := make([]byte, n)
 	if _, err := rand.Read(b); err != nil {
 		return "", err

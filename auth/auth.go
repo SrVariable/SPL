@@ -14,19 +14,20 @@ import (
 
 /* Reference: https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow#response */
 type UserAuth struct {
-	Code string `json:"code,omitempty"`
+	Code  string `json:"code,omitempty"`
 	State string `json:"state"`
 	Error string `json:"error,omitempty"`
 }
+
 /* Reference: https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow#request-user-authorization */
 type UserAuthParams struct {
-	ClientID string
-	ResponseType string
-	RedirectURI string
-	State string
-	Scope string
+	ClientID            string
+	ResponseType        string
+	RedirectURI         string
+	State               string
+	Scope               string
 	CodeChallengeMethod string
-	CodeChallenge string
+	CodeChallenge       string
 }
 
 func buildUserAuthURL(userAuthParams UserAuthParams) (*url.URL, error) {
@@ -72,22 +73,23 @@ func getUserAuth(userAuthParams UserAuthParams) (*UserAuth, error) {
 
 /* Reference: https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow#response-1 */
 type AccessToken struct {
-	AccessToken string `json:"access_token"`
-	TokenType string `json:"token_type"`
-	Scope string `json:"scope"`
-	ExpiresIn int `json:"expires_in"`
+	AccessToken  string `json:"access_token"`
+	TokenType    string `json:"token_type"`
+	Scope        string `json:"scope"`
+	ExpiresIn    int    `json:"expires_in"`
 	RefreshToken string `json:"refresh_token"`
 
 	// To calculate when the token expires
 	CreatedAt time.Time `json:"created_at"`
-	ClientID string `json:"client_id"`
+	ClientID  string    `json:"client_id"`
 }
+
 /* Reference: https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow#request-an-access-token */
 type AccessTokenParams struct {
-	GrantType string
-	Code string
-	RedirectURI string
-	ClientID string
+	GrantType    string
+	Code         string
+	RedirectURI  string
+	ClientID     string
 	CodeVerifier string
 }
 
@@ -115,15 +117,16 @@ func (at *AccessToken) isExpired() bool {
 }
 
 type RefreshTokenParams struct {
-	GrantType string
+	GrantType    string
 	RefreshToken string
-	ClientID string
+	ClientID     string
 }
+
 func refreshToken(at AccessToken) (*AccessToken, error) {
 	refreshTokenParams := RefreshTokenParams{
-		GrantType: "refresh_token",
+		GrantType:    "refresh_token",
 		RefreshToken: at.RefreshToken,
-		ClientID: at.ClientID,
+		ClientID:     at.ClientID,
 	}
 
 	data := url.Values{}
@@ -172,7 +175,7 @@ func loadAccessToken() (*AccessToken, error) {
 		return nil, err
 	}
 
-	if accessToken.isExpired()  {
+	if accessToken.isExpired() {
 		fmt.Println("Token expired, refreshing token...")
 		return refreshToken(accessToken)
 	}
@@ -194,10 +197,10 @@ func GetAccessToken(codeVerifier string, userAuthParams UserAuthParams) (*Access
 	}
 
 	accessTokenParams := AccessTokenParams{
-		GrantType: "authorization_code",
-		Code: userAuth.Code,
-		RedirectURI: userAuthParams.RedirectURI,
-		ClientID: userAuthParams.ClientID,
+		GrantType:    "authorization_code",
+		Code:         userAuth.Code,
+		RedirectURI:  userAuthParams.RedirectURI,
+		ClientID:     userAuthParams.ClientID,
 		CodeVerifier: codeVerifier,
 	}
 
