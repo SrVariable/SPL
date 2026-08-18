@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -67,7 +68,7 @@ func getUserAuth(userAuthParams UserAuthParams) (*UserAuth, error) {
 
 	userAuth := <-userAuthCh
 	if userAuth.Error != "" {
-		return nil, fmt.Errorf(userAuth.Error)
+		return nil, errors.New(userAuth.Error)
 	}
 
 	return userAuth, nil
